@@ -96,21 +96,26 @@ function count(){
     $("#time-remain").text(timeRem);
 
     if (time == 0){
-        // clearInterval(intervalId);
-        onQuestion++;
-
-        time = 30;
-
-        timeUpScreen(onQuestion);
+        ansChoice = $("input:checked").val();
+        if (typeof ansChoice === "undefined"){
+            unanswered++
+            // clearInterval(intervalId);
+            onQuestion++;
+            time = 30;
+            timeUpScreen(onQuestion);
+        } else {
+            checkAnswer();
+        }
     }
 }
 
 //this generates the screen that shows if time runs out and the user hasn't clicked submit 
 //it just has a lil message saying time is up and a tik tok cat
 function timeUpScreen(n){
+
     $("#title").text("TIME IS UP");
     $("#question").html("<img src='https://media.giphy.com/media/xTiTnDYmY4GPT2AB2g/giphy.gif' height='200px'>");
-    $("#answer-choices").text("The correct answer was: "+arr[n].correctAns);
+    $("#answer-choices").text("The correct answer was: "+arr[n-1].correctAns);
 
     $("#submit").hide();
     $("#time-remain").hide()
@@ -122,13 +127,18 @@ function timeUpScreen(n){
 
 // function that generates question and answer choices for each question
 function displayQuestion(n){
+    console.log("correct: "+ansRight);
+    console.log("incorrect: "+ansWrong);
+    console.log("unanswered: "+unanswered);
+
     // display question on screen
     time = 30;
     $("#title").text("Meow I ask you a question?");
     $("#question").text(arr[n].question);
     $("#answer-choices").text('');
     $("#submit").show();
-    $("#time-remain").show()
+    $("#time-remain").show();
+    $("#try-again").hide();
 
     // for loop that creates the answer choices and thier buttons
     for (var a=0; a<arr[n].answers.length; a++){
@@ -167,23 +177,32 @@ function checkAnswer(){
     console.log("now on question "+onQuestion);
     console.log("number of questions: "+ arr.length);
     // time = 30;
-    if (onQuestion < arr.length){
+    
         ansChoice = $("input:checked").val();
         console.log(ansChoice);
         // clearInterval(intervalId);
 
         if (ansChoice == "correct"){
-            correctAnsDisplay(onQuestion-1);
+            //update ansRight variablw
             ansRight++;
-        // $("#wrapper").html("<img src='https://media.giphy.com/media/10JeYbrv6DrU08/giphy.gif'>");
+            //check if we are on last question
+            if (onQuestion < arr.length){
+                correctAnsDisplay(onQuestion-1);
+            } else {
+                clearInterval(intervalId);
+                displayEndScreen();
+            }
         } else {
-            incorrectAnsDisplay(onQuestion-1);
+            //update variable
             ansWrong++;
+            //check if we are on last question
+            if (onQuestion < arr.length){
+                incorrectAnsDisplay(onQuestion-1);
+            } else {
+                clearInterval(intervalId);
+                displayEndScreen();
+            }  
         }
-    } else {
-        clearInterval(intervalId);
-        displayEndScreen();
-    }
     // displayQuestion(onQuestion);
 }
 
@@ -220,10 +239,27 @@ function incorrectAnsDisplay(n){
 }
 
 function displayEndScreen(){
-    console.log('game over');
+    $("#title").text("Game over!!");
+    $("#question").html("<p>Correct: "+ansRight+
+                        "</p><p>Incorrect: "+ansWrong+
+                        "</p><p>Unanswered: "+unanswered);
+    $("#answer-choices").text("");
+
+    $("#try-again").show();
+    $("#submit").hide();
+    $("#time-remain").hide()
+
+    onQuestion = 1;
+
 }
 
 //click function for the submit button
 $("#submit").on("click", checkAnswer);
 
+//click function for reset button
+$("#try-again").on("click", function(){
+    console.log("clicked!");
 });
+
+});
+
