@@ -206,6 +206,14 @@ function checkAnswer(){
     // displayQuestion(onQuestion);
 }
 
+function resetGame(){
+    ansRight = ansWrong = unanswered = onQuestion = 0;
+    time = 30;
+    intervalId = setInterval(count, 1000);
+
+    displayQuestion(onQuestion);
+}
+
 // these functions create the display shown between questions
 // they show either correct or incorrect on top of the screen and a gif
 // if correct there is a fun fact displayed below gif
@@ -257,9 +265,7 @@ function displayEndScreen(){
 $("#submit").on("click", checkAnswer);
 
 //click function for reset button
-$("#try-again").on("click", function(){
-    console.log("clicked!");
-});
+$("#try-again").on("click", resetGame);
 
 });
 
