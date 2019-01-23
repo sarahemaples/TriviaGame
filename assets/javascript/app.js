@@ -96,21 +96,39 @@ function count(){
     $("#time-remain").text(timeRem);
 
     if (time == 0){
-        alert("Out of time!");
         // clearInterval(intervalId);
         onQuestion++;
-        displayQuestion(onQuestion);
+
         time = 30;
+
+        timeUpScreen(onQuestion);
     }
+}
+
+//this generates the screen that shows if time runs out and the user hasn't clicked submit 
+//it just has a lil message saying time is up and a tik tok cat
+function timeUpScreen(n){
+    $("#title").text("TIME IS UP");
+    $("#question").html("<img src='https://media.giphy.com/media/xTiTnDYmY4GPT2AB2g/giphy.gif' height='200px'>");
+    $("#answer-choices").text("The correct answer was: "+arr[n].correctAns);
+
+    $("#submit").hide();
+    $("#time-remain").hide()
+
+    setTimeout(function(){
+        displayQuestion(onQuestion);}, 
+        5000);
 }
 
 // function that generates question and answer choices for each question
 function displayQuestion(n){
     // display question on screen
+    time = 30;
     $("#title").text("Meow I ask you a question?");
     $("#question").text(arr[n].question);
     $("#answer-choices").text('');
     $("#submit").show();
+    $("#time-remain").show()
 
     // for loop that creates the answer choices and thier buttons
     for (var a=0; a<arr[n].answers.length; a++){
@@ -146,44 +164,63 @@ displayQuestion(onQuestion);
 //check answer function
 function checkAnswer(){
     onQuestion++;
-    time = 30;
-    ansChoice = $("input:checked").val();
-    console.log(ansChoice);
-    // clearInterval(intervalId);
+    console.log("now on question "+onQuestion);
+    console.log("number of questions: "+ arr.length);
+    // time = 30;
+    if (onQuestion < arr.length){
+        ansChoice = $("input:checked").val();
+        console.log(ansChoice);
+        // clearInterval(intervalId);
 
-    if (ansChoice == "correct"){
-        correctAnsDisplay(onQuestion-1);
-        ansRight++;
-    // $("#wrapper").html("<img src='https://media.giphy.com/media/10JeYbrv6DrU08/giphy.gif'>");
+        if (ansChoice == "correct"){
+            correctAnsDisplay(onQuestion-1);
+            ansRight++;
+        // $("#wrapper").html("<img src='https://media.giphy.com/media/10JeYbrv6DrU08/giphy.gif'>");
+        } else {
+            incorrectAnsDisplay(onQuestion-1);
+            ansWrong++;
+        }
     } else {
-        incorrectAnsDisplay(onQuestion-1);
-        ansWrong++;
+        clearInterval(intervalId);
+        displayEndScreen();
     }
     // displayQuestion(onQuestion);
 }
 
+// these functions create the display shown between questions
+// they show either correct or incorrect on top of the screen and a gif
+// if correct there is a fun fact displayed below gif
 function correctAnsDisplay(n){
+
     $("#title").text("CORRECT!!!");
     console.log(arr[n].gif);
     $("#question").html("<img src='"+arr[n].gif+"' height='200px'>");
     $("#answer-choices").text(arr[n].funFact);
+
     $("#submit").hide();
+    $("#time-remain").hide()
 
     setTimeout(function(){
         displayQuestion(onQuestion);}, 
         5000);
 }
-
+//if incorrrect, the correct answer is shown 
 function incorrectAnsDisplay(n){
     $("#title").text("Better luck next time....");
     console.log(arr[n].gif);
     $("#question").html("<img src='"+arr[n].gif+"' height='200px'>");
     $("#answer-choices").text("The correct answer was: "+arr[n].correctAns);
+
     $("#submit").hide();
+    $("#time-remain").hide()
 
     setTimeout(function(){
         displayQuestion(onQuestion);}, 
         5000);
+}
+
+function displayEndScreen(){
+    console.log('game over');
 }
 
 //click function for the submit button
