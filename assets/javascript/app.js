@@ -42,33 +42,43 @@ var quest5 = {
     funFact: "The Witch's Council turned him into a cat as punishment for trying to take over the world"
 }
 
-var quest = {
-    question: "",
-    answers: [],
-    correctAns: ""
+var quest6 = {
+    question: "Which large cat is often referred to as 'King of the Jungle'?",
+    answers: ["Lion", "Tiger", "Puma", "Jaguar"],
+    correctAns: "Lion",
+    gif: "https://media.giphy.com/media/mhDwIpbsgGKk/giphy.gif",
+    funFact: "Lions literally don't live in the jungle naturally and they are still the King!"
 }
-var quest = {
-    question: "",
-    answers: [],
-    correctAns: ""
+var quest7 = {
+    question: "How much did Beau Nugget weigh (in pounds) when he made his television debut on Animal Planet's 'My Big Fat Pet Makeover'?",
+    answers: ["23.5", "13.5", "31.5", "19"],
+    correctAns: "23.5",
+    gif: "https://thumbs.gfycat.com/FatFarawayBinturong-size_restricted.gif",
+    funFact: "Check him out in their 3rd episode!"
 }
-var quest = {
-    question: "",
-    answers: [],
-    correctAns: ""
+var quest8 = {
+    question: "What is Ellen's cat named?",
+    answers: ["Charlie", "George", "Chairman", "All are correct"],
+    correctAns: "All are correct",
+    gif: "https://media.giphy.com/media/wxw2e19ZMsjio/giphy.gif",
+    funFact: "She has three beautiful angels! (and some dogs too...)"
 }
-var quest = {
-    question: "",
-    answers: [],
-    correctAns: ""
+var quest9 = {
+    question: "How many legs does my best friend Sophie's cat have?",
+    answers: ["1","2","3","4"],
+    correctAns: "3",
+    gif: "https://media.giphy.com/media/6DyNiFYhOPsje/giphy.gif",
+    funFact: "He just broke one of his good legs this week too..."
 }
-var quest = {
-    question: "",
-    answers: [],
-    correctAns: ""
+var quest10 = {
+    question: "Which day of the week was Garfield's least favorite?",
+    answers: ["Monday", "Tuesday", "Wednesday", "Thursday"],
+    correctAns: "Monday",
+    gif: "https://media.giphy.com/media/8YWmjuxfadur6fzcy3/giphy.gif",
+    funFact: "His favorite dish was lasagna!"
 }
 // here is an array that will eventually hold all my questions and their answer choices
-var arr = [quest1, quest2, quest3, quest4, quest5];
+var arr = [quest1, quest2, quest3, quest4, quest5, quest6, quest7, quest8, quest9, quest10];
 
 var inputBtn;
 var label;
@@ -185,23 +195,11 @@ function checkAnswer(){
         if (ansChoice == "correct"){
             //update ansRight variablw
             ansRight++;
-            //check if we are on last question
-            if (onQuestion < arr.length){
-                correctAnsDisplay(onQuestion-1);
-            } else {
-                clearInterval(intervalId);
-                displayEndScreen();
-            }
+            correctAnsDisplay(onQuestion-1);
         } else {
             //update variable
             ansWrong++;
-            //check if we are on last question
-            if (onQuestion < arr.length){
-                incorrectAnsDisplay(onQuestion-1);
-            } else {
-                clearInterval(intervalId);
-                displayEndScreen();
-            }  
+            incorrectAnsDisplay(onQuestion-1);
         }
     // displayQuestion(onQuestion);
 }
@@ -227,9 +225,14 @@ function correctAnsDisplay(n){
     $("#submit").hide();
     $("#time-remain").hide()
 
-    setTimeout(function(){
-        displayQuestion(onQuestion);}, 
-        5000);
+    if (onQuestion < arr.length){
+        setTimeout(function(){
+            displayQuestion(onQuestion);}, 
+            5000);
+    } else {
+        clearInterval(intervalId);
+        setTimeout(displayEndScreen, 5000);
+    }  
 }
 //if incorrrect, the correct answer is shown 
 function incorrectAnsDisplay(n){
@@ -241,9 +244,14 @@ function incorrectAnsDisplay(n){
     $("#submit").hide();
     $("#time-remain").hide()
 
-    setTimeout(function(){
-        displayQuestion(onQuestion);}, 
-        5000);
+    if (onQuestion < arr.length){
+        setTimeout(function(){
+            displayQuestion(onQuestion);}, 
+            5000);
+    } else {
+        clearInterval(intervalId);
+        setTimeout(displayEndScreen, 5000)
+    }  
 }
 
 function displayEndScreen(){
