@@ -1,0 +1,36 @@
+* {
+    padding: 10px;
+}
+
+body {
+    width: 960px;
+    margin-top: 30px;
+    margin: 0 auto;
+    background: url("../images/kittenBgd.jpg");
+    background-repeat: repeat;
+    color: aliceblue;
+    font-family: 'Aleo', serif;
+    text-align: center;
+}
+
+/* #question {
+    border: solid aliceblue 1px;
+} */
+
+#wrapper {
+    background-color: rgba(9, 21, 44, 0.9);
+    border: 25px solid rgb(9, 21, 44);
+    border-radius: 12px;
+    padding-top: 40px;
+    height: 380px;
+}
+
+#time-remain {
+    background-color: black;
+    border-radius: 12px;
+    margin-top: 5px;
+}
+
+#question{
+    font-size: 1.5em;
+}

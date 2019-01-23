@@ -5,24 +5,78 @@ $(document).ready(function(){
 // my first lil question object!
 // each object has a question, array of answer choices, and a correctAns
 var quest1 = {
-    question: "How many locations does the United States government officially recognize as haunted?",
-    answers: ["0", "2", "430", "55"],
-    correctAns: "2"
+    question: "What kind of cat do I have?",
+    answers: ["Tiger", "Maine coon", "Calico", "Tabby"],
+    correctAns: "Calico", 
+    gif: "https://media.giphy.com/media/10JeYbrv6DrU08/giphy.gif",
+    funFact: "Her name is Kitten and she is the most beautiful creature in the world."
 };
-
 var quest2 = {
-    question: "What is the name of the little girl whom haunts The Tavern in Austin, Texas?",
-    answers: ["Sarah", "Sophie", "Maria", "Emily"],
-    correctAns: "Emily"
+    question: "Which popular 90s cartoon featured a cat and a dog attached at the waist?",
+    answers: ["Hey Arnold", "Spongebob Squarepants", "Doug", "CatDog"],
+    correctAns: "CatDog",
+    gif: "https://media.giphy.com/media/tQ1rgHV3PYg0g/giphy.gif",
+    funFact: "The first episode aired on April 4, 1998"
+};
+var quest3 = {
+    question: "How many breeds of domestic cats are there?",
+    answers: ["497", "58", "123", "11"],
+    correctAns: "58",
+    gif: "https://media.giphy.com/media/5r5J4JD9miis/giphy.gif",
+    funFact: "Due to inconsistencies in breed classifications, this number varies from 43 (Federation Internationale Feline) to 58 (The International Cat Association)"
 }
 
+var quest4 = {
+    question: "Where were cats first domesticated?",
+    answers: ["United States", "Egypt", "Japan", "Spain"],
+    correctAns: "Egypt",
+    gif: "https://media.giphy.com/media/6jvSpFkhlZkoo/giphy.gif",
+    funFact: "Though evidence now shows cats may have been domesticated in Mesopotamia as much as 8000 years earlier!"
+}
+
+var quest5 = {
+    question: "What was Sabrina the Teenage Witch's cat's name?",
+    answers: ["Salem", "Agnes", "Minerva", "Kitten"],
+    correctAns: "Salem",
+    gif: "https://media.giphy.com/media/M7EQSsEXkGRvq/giphy.gif",
+    funFact: "The Witch's Council turned him into a cat as punishment for trying to take over the world"
+}
+
+var quest = {
+    question: "",
+    answers: [],
+    correctAns: ""
+}
+var quest = {
+    question: "",
+    answers: [],
+    correctAns: ""
+}
+var quest = {
+    question: "",
+    answers: [],
+    correctAns: ""
+}
+var quest = {
+    question: "",
+    answers: [],
+    correctAns: ""
+}
+var quest = {
+    question: "",
+    answers: [],
+    correctAns: ""
+}
 // here is an array that will eventually hold all my questions and their answer choices
-var arr = [quest1, quest2];
+var arr = [quest1, quest2, quest3, quest4, quest5];
 
 var inputBtn;
 var label;
 var ansChoice;
 var intervalId;
+var ansRight = 0;
+var ansWrong = 0;
+var unanswered = 0;
 
 //this starts the count for which question you are on as the first question in our list.
 //it will be incremented once player presses submit or time runs out
@@ -32,6 +86,8 @@ var time = 30;
 
 //timer stuff
 intervalId = setInterval(count, 1000);
+
+
 
 //count function that counts down
 function count(){
@@ -51,8 +107,10 @@ function count(){
 // function that generates question and answer choices for each question
 function displayQuestion(n){
     // display question on screen
+    $("#title").text("Meow I ask you a question?");
     $("#question").text(arr[n].question);
     $("#answer-choices").text('');
+    $("#submit").show();
 
     // for loop that creates the answer choices and thier buttons
     for (var a=0; a<arr[n].answers.length; a++){
@@ -69,10 +127,14 @@ function displayQuestion(n){
         }
 
         //adds proper attributes to the buttons and labels
+        $("#voltaic_holder").css({"position":"relative", "top":"-75px"});
+
         inputBtn.attr('id', arr[n].answers[a]);
         inputBtn.attr('name', 'arr[n]');
+        inputBtn.css({"margin-left":"25px"});
         label.attr('for', arr[n].answers[a]);
         label.text(arr[n].answers[a]);
+        label.css({"margin-right":"25px"});
 
         // appends each choice to the answer choices div
         $("#answer-choices").append(inputBtn, label);
@@ -87,13 +149,41 @@ function checkAnswer(){
     time = 30;
     ansChoice = $("input:checked").val();
     console.log(ansChoice);
+    // clearInterval(intervalId);
 
     if (ansChoice == "correct"){
-        alert("you won!");
+        correctAnsDisplay(onQuestion-1);
+        ansRight++;
+    // $("#wrapper").html("<img src='https://media.giphy.com/media/10JeYbrv6DrU08/giphy.gif'>");
     } else {
-        alert("better luck next time bitch");
+        incorrectAnsDisplay(onQuestion-1);
+        ansWrong++;
     }
-    displayQuestion(onQuestion);
+    // displayQuestion(onQuestion);
+}
+
+function correctAnsDisplay(n){
+    $("#title").text("CORRECT!!!");
+    console.log(arr[n].gif);
+    $("#question").html("<img src='"+arr[n].gif+"' height='200px'>");
+    $("#answer-choices").text(arr[n].funFact);
+    $("#submit").hide();
+
+    setTimeout(function(){
+        displayQuestion(onQuestion);}, 
+        5000);
+}
+
+function incorrectAnsDisplay(n){
+    $("#title").text("Better luck next time....");
+    console.log(arr[n].gif);
+    $("#question").html("<img src='"+arr[n].gif+"' height='200px'>");
+    $("#answer-choices").text("The correct answer was: "+arr[n].correctAns);
+    $("#submit").hide();
+
+    setTimeout(function(){
+        displayQuestion(onQuestion);}, 
+        5000);
 }
 
 //click function for the submit button
